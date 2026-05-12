@@ -5,7 +5,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Dumbbell, User, Phone, Mail, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Dumbbell, User, Phone, Mail, ArrowRight, CheckCircle2, Star } from 'lucide-react';
 import { supabase } from './supabaseClient';
 
 export default function App() {
@@ -283,7 +283,7 @@ export default function App() {
               key="success"
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className="text-center"
+              className="text-center w-full max-w-md"
             >
               <div className="flex justify-center mb-6">
                 <motion.div
@@ -299,6 +299,36 @@ export default function App() {
               <p className="text-neutral-400 max-w-xs mx-auto mb-8">
                 Welcome to the family. Check your inbox for updates on the latest diet plans and gym news.
               </p>
+
+              {/* Google Review Section */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="mb-8 p-6 bg-neutral-900/50 border border-neutral-800 rounded-2xl"
+              >
+                <div className="flex items-center justify-center gap-2 mb-3">
+                  <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+                  <h3 className="text-lg font-bold">Love ELITE GYM?</h3>
+                  <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+                </div>
+                <p className="text-neutral-400 text-sm mb-4">
+                  Share your experience and help others discover our gym!
+                </p>
+                <motion.a
+                  href="https://www.google.com/search?q=elite+gym&oq=elite+gym&gs_lcrp=EgZjaHJvbWUyDAgAEEUYORixAxiABDIHCAEQABiABDINCAIQLhivARjHARiABDINCAMQLhivARjHARiABDIHCAQQABiABDIGCAUQRRg9MgYIBhBFGD0yBggHEEUYPdIBCDI2NTlqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8&zx=1778596105386#sv=CAESzQEKuQEStgEKd0FNbjMteVNIR2hsLWtBNklRM0YwNk55ekozX2RMVFRmRWZtYlBad1c5cHhIVHd6aE51elBLWjJ3ZU1oYm1GMHhuSmRONDdLZG1MRnJMa2s1YU5lR0FmS2xpc3VKdHNJOTM3bFpEakoxN0Vuekx0UHQ4U1h2R3BnEhdDamtEYXJuS0tlR2FzZU1QbG9tX3FRWRoiQUpLTEZtTDVEYllZY2ZqY3V5UWdUYmEwUVpSby13aDZTdxIEODA1MRoBMyoAMAA4AUAAGAAgpOGbzgVKAhAC"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="inline-flex items-center justify-center gap-2 w-full bg-brand text-black font-bold py-4 rounded-2xl hover:bg-brand-dark transition-all relative overflow-hidden group"
+                >
+                  <Star className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+                  <span className="relative z-10">LEAVE A GOOGLE REVIEW</span>
+                  <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500" />
+                </motion.a>
+              </motion.div>
+
               <button
                 onClick={() => setIsSuccess(false)}
                 className="text-neutral-500 hover:text-brand transition-colors text-sm uppercase tracking-widest font-bold"
