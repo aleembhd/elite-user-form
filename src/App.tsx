@@ -24,19 +24,25 @@ export default function App() {
     setDuplicateWarning(false); // Clear any previous warnings
     
     try {
+      // Normalized values used for both the duplicate check and the insert.
+      // Email is optional: a blank email is stored as an empty string.
+      const nameValue = formData.name.trim();
+      const phoneValue = formData.phone.trim();
+      const emailValue = formData.email.trim().toLowerCase();
+
       // Check if ALL THREE fields (name, phone, email) already exist in the database
       const { data: existingData, error: checkError } = await supabase
         .from('registrations')
         .select('name, phone, email')
-        .eq('name', formData.name.trim())
-        .eq('phone', formData.phone.trim())
-        .eq('email', formData.email.trim().toLowerCase());
+        .eq('name', nameValue)
+        .eq('phone', phoneValue)
+        .eq('email', emailValue);
 
       // Log for debugging
       console.log('🔍 Checking for duplicates...', { 
-        name: formData.name,
-        phone: formData.phone,
-        email: formData.email,
+        name: nameValue,
+        phone: phoneValue,
+        email: emailValue,
         found: existingData,
         error: checkError 
       });
@@ -56,9 +62,9 @@ export default function App() {
         .from('registrations')
         .insert([
           {
-            name: formData.name,
-            phone: formData.phone,
-            email: formData.email,
+            name: nameValue,
+            phone: phoneValue,
+            email: emailValue,
           }
         ])
         .select();
@@ -72,16 +78,16 @@ export default function App() {
       // Trigger webhook (n8n) with the registration data
       try {
         console.log('📤 Sending data to webhook...');
-        const webhookUrl = import.meta.env.VITE_WEBHOOK_URL || 'https://rafibuildsexp.app.n8n.cloud/webhook/register';
+        const webhookUrl = import.meta.env.VITE_WEBHOOK_URL || 'https://vmi3296646.contaboserver.net/webhook/register';
         const webhookResponse = await fetch(webhookUrl, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            name: formData.name,
-            phone: formData.phone,
-            email: formData.email,
+            name: nameValue,
+            phone: phoneValue,
+            email: emailValue,
           }),
         });
 
@@ -248,9 +254,8 @@ export default function App() {
                     <Mail size={18} />
                   </div>
                   <input
-                    required
                     type="email"
-                    placeholder="Email Address"
+                    placeholder="Email Address (optional)"
                     className="w-full bg-neutral-900/50 border border-neutral-800 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all placeholder:text-neutral-600"
                     value={formData.email}
                     onChange={(e) => {
